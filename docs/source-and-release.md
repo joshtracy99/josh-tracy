@@ -1,25 +1,26 @@
-# Current source and release workflow
+# Source of truth and approved release workflow
 
-The approved studio is recovered in this repository's local history. GitHub `joshtracy99/josh-tracy` main (`0c84d3f`) still contains the older design and is connected to Vercel's production Git trigger. Do not assume main is the current website.
+## Current source of truth — 20 October 2026
 
-The baseline for this refinement is `3c99e820380ad76029c96f179971e330bd32b27b`, deployed as `dpl_CiXB3EA2eRUJTDAZGWg6otVoh217` to https://www.thetradeworkshop.co.uk/ on 20 October 2026. The local branch `codex/conversion-refinement` is isolated from that release. Do not merge, push to main or deploy it without Josh's explicit approval.
+GitHub `joshtracy99/josh-tracy`, branch `main`, now contains the current Trade Workshop website. The old-main/live-source discrepancy was reconciled through [PR #1](https://github.com/joshtracy99/josh-tracy/pull/1), merged as `76975c305d1da1e352f83a32ac44be5bb4efc5ac`, after Josh explicitly approved implementation and deployment.
 
-## Before any release
+The reconciled application files exactly match reviewed local source `c1b65d2876290c2276dcb5b8304c6b72d764d36f` (tree `d594a604911fd5e979eb117db9e7f8d2e300a933`). This documentation update records the completed reconciliation; it does not change the application. Recovered design, mobile and SEO history is preserved locally in the review's source-history bundle.
 
-1. Inspect the production deployment, local branch/commit, all worktrees and uncommitted changes. Compare the actual rendered site with the candidate source. Preserve the current approved snapshot and rollback deployment ID.
-2. Confirm Vercel team `joshtracy99s-projects` and project `thetradeworkshop` (`prj_geTeWu4Ozq1sIkcaw1ez2wnOjJeM`). Inspect from the intended checkout; an unrelated working-directory link can choose another project.
-3. Run the TypeScript/lint/production build checks and browser QA. Keep dependencies, local environments, `.vercel` and build output out of archives and source uploads. Never log or commit credentials.
-4. Present exact changes and validation for approval. A previous deployment approval does not authorise later changes.
-5. After explicit approval, build a production deployment with `vercel deploy --prod --skip-domain`, using the confirmed project/team. Check that exact build with authenticated `vercel curl`; retain Deployment Protection.
-6. Promote the tested production deployment with `vercel promote <deployment-url>`. Confirm the www domain resolves to it and recheck sitemap, canonical/noindex output, navigation, mobile UI and form failure handling. Do not count an accepted email API call as proof of inbox delivery.
-7. Record source commit, deployment ID, public URL and test results. Keep the previous release available for rollback. The site has no database migration in this iteration.
+Vercel team: `joshtracy99s-projects` / `team_xReeARkcbfNGK6te00eauDv8`. Project: `thetradeworkshop` / `prj_geTeWu4Ozq1sIkcaw1ez2wnOjJeM`. Public URL: https://www.thetradeworkshop.co.uk/.
 
-## GitHub reconciliation — prepared locally, not published
+## Release rules
 
-Create a separate reconciliation branch from actual GitHub main, place the complete approved current source there, and review the whole old/new diff in a PR. Preserve this recovered history in a local Git bundle. Do not cherry-pick only the newest refinement onto old main: that would omit the approved hero, phone, mobile and SEO work.
+1. Start future work from current GitHub main, inspect worktrees/uncommitted changes, and preserve the approved baseline. Use an isolated feature branch.
+2. Vercel's existing Git integration builds feature-branch previews and automatically releases main. Therefore pushing or merging into main is a production action and requires Josh's explicit release approval. Approval of one release does not approve later changes.
+3. Verify the intended Vercel project/team and exact source commit before any CLI release. Do not let an unrelated working-directory link select another project.
+4. Run relevant TypeScript, lint, production-build, browser, mobile, accessibility and functionality checks. Present concrete changes and evidence before seeking release approval.
+5. For a staged production check, use `vercel deploy --prod --skip-domain`, test that exact deployment through authenticated `vercel curl`, and retain Deployment Protection. The refinement application was tested in such a production candidate before the reconciliation merge.
+6. After an approved main deployment or promotion, verify the actual www domain's deployment ID, commit, sitemap/canonicals/noindex, mobile navigation, phone demonstration and controlled form states. Record the receipt and rollback reference.
+7. Keep dependencies, build output, .vercel state and local environments out of source archives/uploads. Never print, commit or publish credentials. This iteration has no database migration.
+8. Require owner review before changing branch protections, CI release gates, Git triggers, access controls or integration settings. No such account settings were changed in this release. Main's existing automatic deployment remains active; a platform-enforced manual approval gate is not claimed.
 
-The completion review prepares `codex/studio-source-of-truth` in the separate GitHub clone with the current GitHub main as parent and the exact tested refinement tree. Its commit, parent and tree equality are recorded in the review's `source-reconciliation.json`, with a patch against GitHub main and a draft PR description. The recovered development history remains in `source-history.bundle`. This is a local review branch, not a remote PR or production release. A remote push could trigger an automatic preview deployment, so publication waits for explicit approval too.
+## Operational decisions retained
 
-Once approved, merge the reconciled current source and use that repository as the single maintained source. Protect main with review/check requirements; feature branches should produce preview deployments. Keep production promotion behind explicit owner approval. Configure those protections only after reviewing repository access and the proposed workflow; no GitHub/Vercel trigger settings were changed here.
+Public contact details remain private at Josh's request. Resend sender/recipient/API-key setup is deferred; code and mocked tests do not establish actual inbox delivery. See [enquiry delivery](enquiry-delivery.md). Legal policy proposals with unconfirmed facts were kept separate and were not published. The £29 offer and existing legal substance are unchanged.
 
-The review source archive and binary-safe patch are for the stated current baseline. Do not apply the patch blindly to the older GitHub main.
+The preceding production release `dpl_CiXB3EA2eRUJTDAZGWg6otVoh217` remains the pre-refinement rollback reference. Match the latest release to its actual Vercel Git commit and deployment record rather than assuming that a default project alias proves which build serves www.
