@@ -11,14 +11,16 @@ const maxBytes = 6_000_000;
 function applyImage(demo: Demo, slot: string, service: string, image: DemoImage | undefined): Demo {
   if (slot === "hero") {
     if (!image) {
-      const { hero: _hero, ...rest } = demo;
+      const rest = { ...demo };
+      delete rest.hero;
       return rest;
     }
     return { ...demo, hero: image };
   }
   if (slot === "wide") {
     if (!image) {
-      const { wide: _wide, ...rest } = demo;
+      const rest = { ...demo };
+      delete rest.wide;
       return rest;
     }
     return { ...demo, wide: image };
@@ -28,7 +30,8 @@ function applyImage(demo: Demo, slot: string, service: string, image: DemoImage 
     services: demo.services.map((item) => {
       if (item.slug !== service) return item;
       if (!image) {
-        const { image: _image, ...rest } = item;
+        const rest = { ...item };
+        delete rest.image;
         return rest;
       }
       return { ...item, image };

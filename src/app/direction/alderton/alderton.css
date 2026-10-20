@@ -1,0 +1,662 @@
+.alderton {
+  --al-paper: #eef0ec;
+  --al-ink: #14171a;
+  --al-signal: #d06a3a;
+  --al-signal-deep: #8a3e1c;
+  --al-signal-ink: #14171a;
+  --al-signal-hover: #b85a30;
+  --al-mute: #3e4744;
+  --al-line: #d0d5d0;
+  --al-field: #e4e7e2;
+  --al-danger: #9d2c24;
+  --al-still: #d5dad6;
+  --al-mark: var(--al-signal-deep);
+  --al-on-dark-ink: #f4f5f3;
+  --al-on-dark-mute: #c5ccc6;
+  background: var(--al-paper);
+  color: var(--al-ink);
+  font-family: var(--font-al), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+}
+
+.alderton ::selection {
+  background: #d06a3a;
+  color: #14171a;
+}
+
+.alderton :focus-visible {
+  outline: 2px solid var(--al-signal-deep);
+  outline-offset: 3px;
+}
+
+.al-on-dark {
+  background: var(--al-ink);
+  color: var(--al-on-dark-ink);
+  --al-mark: var(--al-signal);
+}
+
+.al-on-dark :focus-visible {
+  outline-color: #f4f5f3;
+}
+
+.al-block {
+  width: min(100%, 90rem);
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .al-block {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .al-block {
+    padding-inline: 2.5rem;
+  }
+}
+
+.al-display,
+.al-mark,
+.al-num {
+  font-family: var(--font-al-display), var(--font-al), "Arial Narrow", Arial, sans-serif;
+}
+
+.al-display {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+}
+
+.al-poster {
+  display: flex;
+  min-height: calc(100svh - 18.5rem);
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+/* Tablet: statement, then the actions, then the plate. The plate must not sit on top of the pitch. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .al-hero-home {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "title"
+      "actions"
+      "plate";
+    row-gap: 1.5rem;
+  }
+
+  .al-hero-home .al-poster {
+    display: contents;
+    min-height: 0;
+  }
+
+  .al-hero-home .al-hero-title {
+    grid-area: title;
+  }
+
+  .al-hero-home .al-hero-plate {
+    grid-area: plate;
+    margin-top: 0;
+  }
+
+  .al-hero-home .al-hero-actions {
+    grid-area: actions;
+  }
+}
+
+/* Desktop: the plate locks to the full statement, not to a short text block under a void. */
+@media (min-width: 1024px) {
+  .al-hero-home {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 24rem);
+    grid-template-areas:
+      "title plate"
+      "book plate"
+      "actions plate";
+    column-gap: clamp(2.5rem, 4vw, 4.5rem);
+    row-gap: 0.85rem;
+    align-items: start;
+  }
+
+  .al-hero-home .al-poster,
+  .al-hero-home .al-split {
+    display: contents;
+  }
+
+  .al-hero-home .al-hero-h {
+    grid-area: title;
+  }
+
+  .al-hero-home .al-hero-book {
+    grid-area: book;
+    margin-top: 0;
+  }
+
+  .al-hero-home .al-hero-actions {
+    grid-area: actions;
+  }
+
+  .al-hero-home .al-hero-plate {
+    grid-area: plate;
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 1280px) {
+  .al-hero-home {
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 28rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .al-hero-aside {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 24rem);
+    column-gap: 3.5rem;
+    row-gap: 1.75rem;
+    align-items: start;
+  }
+
+  .al-hero-aside .al-hero-title {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .al-hero-aside .al-hero-actions {
+    grid-column: 1;
+    grid-row: 2;
+    margin-top: 0;
+  }
+
+  .al-hero-aside .al-hero-plate {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin-top: 0;
+  }
+}
+
+.al-pipes {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: #1c211f;
+}
+
+.alderton .al-pipes-img {
+  position: absolute !important;
+  width: 238.2% !important;
+  max-width: none !important;
+  height: auto !important;
+  left: -138.2% !important;
+  top: -30% !important;
+  right: auto !important;
+  bottom: auto !important;
+}
+
+.al-mark {
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: -0.045em;
+  line-height: 0.9;
+}
+
+@media (min-width: 640px) {
+  .al-mark {
+    font-size: 1.5rem;
+  }
+}
+
+.al-fitting {
+  display: block;
+  width: 1.55rem;
+  height: 1.55rem;
+  flex-shrink: 0;
+  color: var(--al-mark);
+}
+
+.al-num {
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.al-btn {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--al-signal-deep);
+  background: var(--al-signal);
+  color: var(--al-signal-ink);
+  padding: 0 1.1rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color 140ms ease;
+}
+
+.al-btn:hover {
+  background: var(--al-signal-hover);
+}
+
+.al-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.al-ghost {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(244, 245, 243, 0.72);
+  background: transparent;
+  color: inherit;
+  padding: 0 1.1rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color 140ms ease;
+}
+
+.al-ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.al-quiet {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  font-size: 0.9375rem;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.28em;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+}
+
+.al-quiet:hover {
+  text-decoration-color: currentColor;
+}
+
+.al-nav-link {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: inherit;
+  text-underline-offset: 0.45em;
+  text-decoration-thickness: 2px;
+}
+
+.al-nav-link[aria-current="page"] {
+  color: var(--al-on-dark-ink);
+  text-decoration-line: underline;
+  text-decoration-color: var(--al-signal);
+}
+
+.al-nav-scroll {
+  scrollbar-width: none;
+}
+
+@media (max-width: 1023px) {
+  .al-nav-scroll {
+    padding-right: 2.75rem;
+  }
+}
+
+/* 320px-wide phones: the sticky call bar covers a tall hero. Tighten these three only. */
+@media (max-width: 359px) {
+  .alderton .al-hero-tight {
+    padding-top: 0.7rem;
+    padding-bottom: 1rem;
+    gap: 0.85rem;
+  }
+
+  .alderton .al-hero-tight .al-hero-h {
+    font-size: 1.8rem;
+  }
+
+  .alderton .al-hero-tight .al-hero-book {
+    margin-top: 0.35rem;
+    font-size: 1.2rem;
+  }
+
+  .alderton .al-hero-tight .al-hero-lead {
+    margin-top: 0.7rem;
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  .alderton .al-hero-tight .al-hero-phone {
+    margin-top: 0.45rem;
+    font-size: 1.85rem;
+  }
+
+  .alderton .al-hero-tight .al-hero-actions {
+    margin-top: 0.7rem;
+    gap: 0.5rem;
+  }
+
+  .alderton .al-hero-tight .al-btn,
+  .alderton .al-hero-tight .al-ghost {
+    min-height: 2.75rem;
+  }
+
+  .alderton .al-nav-scroll {
+    padding-right: 0;
+    mask-image: none;
+  }
+
+  .alderton .al-nav-scroll .al-nav-link {
+    padding-inline: 0.28rem;
+    font-size: 0.8125rem;
+  }
+}
+
+/* Below the tablet grid, stack the pitch. A tall space-between poster leaves a hole between the headline and the buttons. */
+@media (max-width: 767px) {
+  .al-hero-home .al-poster {
+    min-height: 0;
+    justify-content: flex-start;
+    gap: 1.15rem;
+  }
+}
+
+@media (max-width: 389px) {
+  .al-hero-home .al-poster {
+    gap: 1rem;
+  }
+
+  .al-hero-home .al-hero-h {
+    font-size: 2.55rem;
+  }
+
+  .al-hero-home .al-hero-book {
+    margin-top: 0.5rem;
+    font-size: 1.35rem;
+  }
+
+  .al-hero-home .al-btn,
+  .al-hero-home .al-ghost {
+    min-height: 2.75rem;
+  }
+
+  .al-hero-home .al-hero-actions .flex {
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .al-nav-scroll {
+    mask-image: linear-gradient(to right, #000 calc(100% - 1.75rem), transparent);
+  }
+}
+
+/* Five labels have to stay readable without a horizontal scroll on a phone. */
+@media (max-width: 429px) {
+  .alderton .al-nav-scroll {
+    padding-right: 0;
+    mask-image: none;
+  }
+
+  .alderton .al-nav-scroll .al-nav-link {
+    padding-inline: 0.32rem;
+    font-size: 0.8125rem;
+  }
+}
+
+@media (max-width: 359px) {
+  .alderton .al-nav-scroll .al-nav-link {
+    padding-inline: 0.2rem;
+  }
+}
+
+.al-nav-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.al-field {
+  margin-top: 0.4rem;
+  width: 100%;
+  border: 1px solid var(--al-line);
+  background: #fff;
+  color: var(--al-ink);
+  padding: 0.8rem 0.85rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  border-radius: 0;
+}
+
+.al-field:focus {
+  outline: 2px solid var(--al-ink);
+  outline-offset: 2px;
+  border-color: var(--al-ink);
+}
+
+.al-choice {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  border: 1px solid var(--al-line);
+  padding: 0 0.95rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  background: #fff;
+  color: var(--al-ink);
+}
+
+.peer:checked + .al-choice {
+  border-color: var(--al-signal-deep);
+  background: var(--al-signal);
+  color: var(--al-signal-ink);
+}
+
+.peer:focus-visible + .al-choice {
+  outline: 2px solid var(--al-signal-deep);
+  outline-offset: 3px;
+}
+
+.al-kicker {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--al-signal-deep);
+}
+
+.al-on-dark .al-kicker {
+  color: var(--al-signal);
+}
+
+.al-frame {
+  position: relative;
+}
+
+.al-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0.65rem;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--al-frame, var(--al-signal-deep)), var(--al-frame, var(--al-signal-deep))) left top / 0.7rem 2px no-repeat,
+    linear-gradient(var(--al-frame, var(--al-signal-deep)), var(--al-frame, var(--al-signal-deep))) left top / 2px 0.7rem no-repeat,
+    linear-gradient(var(--al-frame, var(--al-signal-deep)), var(--al-frame, var(--al-signal-deep))) right top / 0.7rem 2px no-repeat,
+    linear-gradient(var(--al-frame, var(--al-signal-deep)), var(--al-frame, var(--al-signal-deep))) right top / 2px 0.7rem no-repeat,
+    linear-gradient(var(--al-frame, var(--al-signal-deep)), var(--al-frame, var(--al-signal-deep))) left bottom / 0.7rem 2px no-repeat,
+    linear-gradient(var(--al-frame, var(--al-signal-deep)), var(--al-frame, var(--al-signal-deep))) left bottom / 2px 0.7rem no-repeat,
+    linear-gradient(var(--al-frame, var(--al-signal-deep)), var(--al-frame, var(--al-signal-deep))) right bottom / 0.7rem 2px no-repeat,
+    linear-gradient(var(--al-frame, var(--al-signal-deep)), var(--al-frame, var(--al-signal-deep))) right bottom / 2px 0.7rem no-repeat;
+}
+
+.alderton {
+  --al-frame: var(--al-signal-deep);
+}
+
+.al-on-dark {
+  --al-frame: var(--al-signal);
+}
+
+.al-map-stage {
+  position: relative;
+  background: #e4e0d6;
+  overflow: hidden;
+}
+
+.al-map-mosaic {
+  position: absolute;
+  display: grid;
+}
+
+.al-map-mosaic img {
+  display: block;
+  width: calc(100% + 1px);
+  max-width: none;
+  height: calc(100% + 1px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.al-map-pin {
+  position: absolute;
+  z-index: 2;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--al-ink);
+  box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px rgba(20, 23, 26, 0.55);
+  transform: translate(-50%, -50%);
+}
+
+.al-map-pin.is-base {
+  width: 0.72rem;
+  height: 0.72rem;
+  background: var(--al-signal);
+  box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px var(--al-signal-deep);
+}
+
+.al-map-credit {
+  position: absolute;
+  z-index: 3;
+  right: 0.7rem;
+  bottom: 0.65rem;
+  max-width: calc(100% - 1.4rem);
+  padding: 0.2rem 0.45rem;
+  background: rgb(238 240 236 / 94%);
+  color: var(--al-ink);
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.al-situations {
+  margin: 2.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 2px solid var(--al-ink);
+}
+
+.al-situations li {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  gap: 0.35rem 1rem;
+  align-items: baseline;
+  border-bottom: 1px solid var(--al-line);
+  padding-block: 1rem;
+}
+
+.al-situations p {
+  margin: 0;
+  font-family: var(--font-al-display), var(--font-al), "Arial Narrow", Arial, sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.45rem, 2.15vw, 2.15rem);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.al-method {
+  margin: 2.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 2px solid var(--al-ink);
+}
+
+.al-method li {
+  display: grid;
+  gap: 0.4rem 2.5rem;
+  border-bottom: 1px solid var(--al-line);
+  padding-block: 1.15rem;
+}
+
+.al-method h3 {
+  font-family: var(--font-al-display), var(--font-al), "Arial Narrow", Arial, sans-serif;
+  font-size: clamp(1.45rem, 2vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+@media (min-width: 768px) {
+  .al-method li {
+    grid-template-columns: 11.5rem minmax(0, 1fr);
+    align-items: baseline;
+  }
+}
+
+.al-route {
+  margin: 0;
+  padding: 0 0 0 1.35rem;
+  list-style: none;
+  background-image: linear-gradient(var(--al-signal), var(--al-signal)),
+    linear-gradient(var(--al-signal), var(--al-signal));
+  background-repeat: no-repeat;
+  background-position: 0 0, 0.38rem 0;
+  background-size: 2px 100%, 2px 100%;
+}
+
+.al-route li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--al-line);
+  padding-block: 0.9rem;
+}
+
+.al-route li:first-child {
+  padding-top: 0;
+}
+
+.al-route-base {
+  font-family: var(--font-al-display), var(--font-al), "Arial Narrow", Arial, sans-serif;
+  font-size: clamp(1.85rem, 2.6vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+.alderton section[aria-labelledby],
+.alderton main > header {
+  scroll-margin-top: 10rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alderton *,
+  .alderton *::before,
+  .alderton *::after {
+    transition: none !important;
+  }
+}

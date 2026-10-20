@@ -14,7 +14,7 @@ const statusLabel = {
 export default async function StudioIndex() {
   const demos = await listDemos();
   return (
-    <div>
+    <div className="mx-auto max-w-3xl">
       <h1 className="text-4xl font-medium tracking-[-0.04em]">Demonstrations</h1>
       <p className="mt-4 max-w-xl text-sm leading-relaxed text-mute">
         One file per business. Type what they actually told you, read the pages, then approve before you send the link.

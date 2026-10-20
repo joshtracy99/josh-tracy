@@ -1,3 +1,4 @@
+import type { DirectionId } from "@/lib/directions";
 import { callHref, example, exampleNav, quoteHref, whatsappHref } from "@/lib/example";
 
 export type ChromeLink = { href: string; label: string };
@@ -28,6 +29,7 @@ export type ChromeSite = {
   creditHref: string;
   creditLabel: string;
   offer: ChromeOffer | null;
+  direction?: DirectionId;
 };
 
 export const aldertonChrome: ChromeSite = {

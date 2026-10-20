@@ -1,3 +1,4 @@
+import { directionForTrade } from "@/lib/directions";
 import type { CreateInput, Demo, DemoService, TradeId } from "@/lib/demos/schema";
 
 const tradeLines: Record<TradeId, { line: string; contact: string }> = {
@@ -336,6 +337,7 @@ export function buildDemo(
       (name) => name && name.length >= 2,
     )!.slice(0, 40),
     trade: input.trade,
+    direction: directionForTrade(input.trade),
     town: input.town,
     region: input.region?.trim() ?? "",
     phone: input.phone,

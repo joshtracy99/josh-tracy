@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { directionIds } from "@/lib/directions";
 
 export const tradeIds = ["plumber", "electrician", "landscaper", "builder", "roofer"] as const;
 export type TradeId = (typeof tradeIds)[number];
@@ -58,6 +59,7 @@ export const demoSchema = z
     businessName: z.string().trim().min(2).max(80),
     shortName: z.string().trim().min(2).max(40),
     trade: z.enum(tradeIds),
+    direction: z.enum(directionIds).optional(),
     town: z.string().trim().min(2).max(80),
     region: z.string().trim().max(40),
     phone: z.string().trim().min(8).max(20),

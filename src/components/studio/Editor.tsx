@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { directionCopy, directionForTrade, directionIds, resolveDirection } from "@/lib/directions";
 import type { Demo, DemoImage, DemoStatus } from "@/lib/demos/schema";
 
 const inputClass = "mt-2 w-full border bg-panel px-3 py-3 text-base text-ink focus:border-ink border-mute";
@@ -84,6 +85,8 @@ export function Editor({ initial, aboutLeftOff, photoError }: { initial: Demo; a
   const [message, setMessage] = useState(photoError ?? "");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [frame, setFrame] = useState<"desk" | "phone">("desk");
+  const [previewKey, setPreviewKey] = useState(0);
 
   function patch(partial: Partial<Demo>) {
     setDemo((current) => ({ ...current, ...partial }));
@@ -108,7 +111,12 @@ export function Editor({ initial, aboutLeftOff, photoError }: { initial: Demo; a
       const response = await fetch(`/api/demos/${demo.slug}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...demo, status, areas }),
+        body: JSON.stringify({
+          ...demo,
+          direction: demo.direction ?? directionForTrade(demo.trade),
+          status,
+          areas,
+        }),
       });
       const body = (await response.json().catch(() => null)) as { error?: string; demo?: Demo } | null;
       if (!response.ok || !body?.demo) {
@@ -119,6 +127,7 @@ export function Editor({ initial, aboutLeftOff, photoError }: { initial: Demo; a
       setDemo(body.demo);
       setAreasText(body.demo.areas.join("\n"));
       setMessage(status === demo.status ? "Saved." : "Saved.");
+      setPreviewKey((key) => key + 1);
       setBusy(false);
       router.refresh();
       return body.demo;
@@ -152,6 +161,7 @@ export function Editor({ initial, aboutLeftOff, photoError }: { initial: Demo; a
       };
     });
     setMessage("Photograph added. Save if you still have wording to keep.");
+    setPreviewKey((key) => key + 1);
   }
 
   async function remove(slot: "hero" | "wide" | "service", service?: string) {
@@ -164,22 +174,26 @@ export function Editor({ initial, aboutLeftOff, photoError }: { initial: Demo; a
     }
     setDemo((current) => {
       if (slot === "hero") {
-        const { hero: _hero, ...rest } = current;
+        const rest = { ...current };
+        delete rest.hero;
         return rest;
       }
       if (slot === "wide") {
-        const { wide: _wide, ...rest } = current;
+        const rest = { ...current };
+        delete rest.wide;
         return rest;
       }
       return {
         ...current,
         services: current.services.map((item) => {
           if (item.slug !== service) return item;
-          const { image: _image, ...rest } = item;
+          const rest = { ...item };
+          delete rest.image;
           return rest;
         }),
       };
     });
+    setPreviewKey((key) => key + 1);
   }
 
   async function rewrite() {
@@ -196,6 +210,7 @@ export function Editor({ initial, aboutLeftOff, photoError }: { initial: Demo; a
     setDemo(body.demo);
     setAreasText(body.demo.areas.join("\n"));
     setMessage("Standard wording put back. Read it before you approve.");
+    setPreviewKey((key) => key + 1);
     setBusy(false);
   }
 
@@ -219,8 +234,19 @@ export function Editor({ initial, aboutLeftOff, photoError }: { initial: Demo; a
         ? "Approved. Send /d/" + demo.slug + " once the site is deployed. Search engines are told not to index it."
         : "Marked as the finished site. The demonstration label is off. Call uses their number when it can be dialled, and WhatsApp only when it is a UK mobile. A quote is emailed to you, not to their inbox. It is still not indexed on this address. Their own domain later uses this same file.";
 
+  const notes = [
+    demo.services.length === 0 ? "Add at least one service before you approve it." : "",
+    demo.headlineLead.trim().length > 48 ? "The opening line is long. Read it on a phone before you approve it." : "",
+    demo.pitch.trim().length > 220 ? "The introduction is long for a homepage." : "",
+    !demo.hero ? "No homepage photograph. Leave it that way unless you have one of theirs." : "",
+    (demo.registrationLabel && !demo.registrationNumber) || (!demo.registrationLabel && demo.registrationNumber)
+      ? "A registration needs both the name and the number, or neither."
+      : "",
+  ].filter((note) => note.length > 0);
+
   return (
-    <div className="grid gap-10">
+    <div className="grid items-start gap-12 xl:grid-cols-[minmax(0,40rem)_minmax(18rem,1fr)]">
+      <div className="grid min-w-0 gap-10">
       <div className="flex flex-wrap items-baseline justify-between gap-4">
         <div>
           <p className="text-sm text-mute">{demo.status === "draft" ? "Draft" : demo.status === "approved" ? "Approved" : "Finished site"}</p>
@@ -231,6 +257,27 @@ export function Editor({ initial, aboutLeftOff, photoError }: { initial: Demo; a
         </Link>
       </div>
       <p className="max-w-xl text-sm leading-relaxed text-mute">{share}</p>
+      <fieldset>
+        <legend className="text-sm text-mute">Direction</legend>
+        <div className="mt-3 grid gap-2 sm:grid-cols-3" role="radiogroup" aria-label="Direction">
+          {directionIds.map((choice) => {
+            const selected = resolveDirection(demo) === choice;
+            return (
+              <button
+                key={choice}
+                type="button"
+                role="radio"
+                aria-checked={selected}
+                onClick={() => patch({ direction: choice })}
+                className={`border px-3 py-3 text-left ${selected ? "border-ink bg-ink text-paper" : "border-line text-mute"}`}
+              >
+                <span className="block text-sm">{directionCopy[choice].name}</span>
+                <span className="mt-1 block text-sm leading-snug">{directionCopy[choice].note}</span>
+              </button>
+            );
+          })}
+        </div>
+      </fieldset>
       {aboutLeftOff ? (
         <p className="max-w-xl text-sm leading-relaxed text-mute">
           The about text is saved, but left off this demonstration so it stays within six pages. Remove a service to make room.
@@ -414,6 +461,16 @@ export function Editor({ initial, aboutLeftOff, photoError }: { initial: Demo; a
         />
       </div>
 
+      {notes.length > 0 ? (
+        <ul className="max-w-xl border-t border-line text-sm leading-relaxed text-mute">
+          {notes.map((note) => (
+            <li key={note} className="border-b border-line py-3">
+              {note}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+
       <div className="flex flex-wrap gap-3">
         <button type="button" disabled={busy} onClick={() => save()} className="inline-flex min-h-12 items-center bg-ink px-5 text-sm text-paper disabled:opacity-60">
           Save
@@ -442,6 +499,45 @@ export function Editor({ initial, aboutLeftOff, photoError }: { initial: Demo; a
           Delete
         </button>
       </div>
+      </div>
+      <aside className="xl:sticky xl:top-[4.6rem]">
+        <div className="flex items-center justify-between gap-4">
+          <p className="text-sm text-mute">Preview</p>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              aria-pressed={frame === "desk"}
+              onClick={() => setFrame("desk")}
+              className={`inline-flex min-h-11 items-center px-3 text-sm ${frame === "desk" ? "bg-ink text-paper" : "text-mute"}`}
+            >
+              Desktop
+            </button>
+            <button
+              type="button"
+              aria-pressed={frame === "phone"}
+              onClick={() => setFrame("phone")}
+              className={`inline-flex min-h-11 items-center px-3 text-sm ${frame === "phone" ? "bg-ink text-paper" : "text-mute"}`}
+            >
+              Phone
+            </button>
+          </div>
+        </div>
+        <p className="mt-2 max-w-md text-sm leading-relaxed text-mute">
+          Save to update this. It is the same page you would send, and it is not indexed.
+        </p>
+        <div className="mt-4 overflow-hidden border border-line bg-white">
+          <iframe
+            key={previewKey}
+            title={`Preview of ${demo.businessName}`}
+            src={`/d/${demo.slug}`}
+            className={
+              frame === "phone"
+                ? "mx-auto block h-[36rem] w-[390px] max-w-full bg-white"
+                : "block h-[70vh] min-h-[32rem] w-full bg-white"
+            }
+          />
+        </div>
+      </aside>
     </div>
   );
 }

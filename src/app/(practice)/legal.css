@@ -1,0 +1,20 @@
+.studio-legal { display: flex; flex-direction: column; min-height: 100svh; }
+.studio-legal-content {
+  flex: 1;
+  width: min(100%, 49rem);
+  margin-inline: auto;
+  padding: clamp(2.5rem, 6vw, 5rem) var(--gutter) clamp(4rem, 8vw, 6rem);
+  scroll-margin-top: 5rem;
+}
+.studio-legal-content h1, .studio-legal-copy h2 {
+  color: var(--ink);
+  font-family: var(--font-syne), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.1;
+}
+.studio-legal-content h1 { margin: 0 0 2rem; font-size: clamp(2.8rem, 6vw, 4.5rem); }
+.studio-legal-copy { color: var(--mute); font-size: 1.0625rem; line-height: 1.7; }
+.studio-legal-copy p { margin: 0 0 1.4rem; }
+.studio-legal-copy h2 { margin: 2.25rem 0 0.85rem; font-size: clamp(1.4rem, 3vw, 1.75rem); }
+.studio-legal-copy a { text-decoration: underline; text-underline-offset: 0.2em; }

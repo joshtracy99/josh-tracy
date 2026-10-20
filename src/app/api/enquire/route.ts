@@ -1,13 +1,23 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { createHash } from "node:crypto";
 import { isEmailConfigured, sendEnquiryEmail } from "@/lib/mailer";
 
 const schema = z.object({
   name: z.string().trim().min(2).max(80),
   trade: z.string().trim().min(2).max(80),
   town: z.string().trim().min(2).max(80),
-  mobile: z.string().trim().min(8).max(20),
+  mobile: z
+    .string()
+    .trim()
+    .min(8)
+    .max(20)
+    .refine((value) => {
+      const digits = value.replace(/\D/g, "").length;
+      return digits >= 10 && digits <= 15;
+    }),
   listing: z.string().trim().max(400).optional().or(z.literal("")),
+  business: z.string().trim().min(2).max(80),
   company_website: z.string().optional(),
 });
 
@@ -37,7 +47,13 @@ export async function POST(request: Request) {
       return NextResponse.redirect(new URL("/?error=1#start", request.url), 303);
     }
     return NextResponse.json(
-      { error: "Check your name, trade, town and mobile, then try again." },
+      {
+        error: "Check your business name, name, trade, town and mobile, then try again.",
+        fields: Object.fromEntries(Object.keys(parsed.error.flatten().fieldErrors).map((name) => [
+          name,
+          name === "mobile" ? "Check the mobile number." : name === "listing" ? "That link is too long to send." : `Check the ${name === "business" ? "business name" : name}.`,
+        ])),
+      },
       { status: 400 },
     );
   }
@@ -46,8 +62,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
+  const requestKey = request.headers.get("idempotency-key");
+  if (requestKey && !/^[a-zA-Z0-9-]{1,64}$/.test(requestKey)) {
+    return NextResponse.json({ error: "That request wasn’t recognised. Please refresh and try again." }, { status: 400 });
+  }
+
   const fields = {
     Name: parsed.data.name,
+    ...(parsed.data.business ? { Business: parsed.data.business } : {}),
     Trade: parsed.data.trade,
     Town: parsed.data.town,
     Mobile: parsed.data.mobile,
@@ -72,9 +94,12 @@ export async function POST(request: Request) {
   }
 
   try {
-    await sendEnquiryEmail(fields);
+    const idempotencyKey = requestKey
+      ? `studio-enquiry/${requestKey}/${createHash("sha256").update(JSON.stringify(fields)).digest("hex")}`
+      : undefined;
+    await sendEnquiryEmail(fields, { idempotencyKey });
   } catch (error) {
-    console.error("[enquire]", error);
+    console.error("[enquire] Email delivery failed.", { name: error instanceof Error ? error.name : "UnknownError" });
     if (!asJson) {
       return NextResponse.redirect(new URL("/?error=1#start", request.url), 303);
     }
