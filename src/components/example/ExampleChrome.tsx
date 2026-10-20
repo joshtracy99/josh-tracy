@@ -27,24 +27,33 @@ export function ExampleChrome({
   }, []);
 
   return (
-    <div className="min-h-screen overflow-x-clip bg-ex-paper pb-28 font-example text-ex-ink lg:pb-0">
+    <div
+      className={`min-h-screen overflow-x-clip bg-ex-paper pb-28 font-example text-ex-ink lg:pb-0${
+        site.direction ? ` dir-${site.direction}` : ""
+      }`}
+    >
       <a
         href="#content"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-ex-ink focus:px-3 focus:py-2 focus:text-ex-paper"
       >
         Skip to content
       </a>
-      <div className="flex items-center justify-between gap-4 border-b border-white/10 bg-ex-ink px-5 text-sm text-ex-paper md:px-8">
-        <span className="inline-flex min-h-11 items-center">{site.banner}</span>
-        {site.bannerLink ? (
-          <Link
-            href={site.bannerHref}
-            className="inline-flex min-h-11 shrink-0 items-center underline decoration-white/30 underline-offset-4"
-          >
-            {site.bannerLink}
-          </Link>
-        ) : null}
-      </div>
+      {site.banner ? (
+        <div
+          data-banner
+          className="flex items-center justify-between gap-4 border-b border-white/10 bg-ex-ink px-5 text-sm text-ex-paper md:px-8"
+        >
+          <span className="inline-flex min-h-11 items-center">{site.banner}</span>
+          {site.bannerLink ? (
+            <Link
+              href={site.bannerHref}
+              className="inline-flex min-h-11 shrink-0 items-center underline decoration-white/30 underline-offset-4"
+            >
+              {site.bannerLink}
+            </Link>
+          ) : null}
+        </div>
+      ) : null}
 
       <header className="sticky top-0 z-30 border-b border-ex-line bg-ex-paper">
         <div className="flex w-full items-center justify-between gap-6 px-5 py-2 md:px-8 md:py-3.5">

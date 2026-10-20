@@ -1,4 +1,5 @@
 import type { ChromeSite } from "@/lib/chrome";
+import { resolveDirection } from "@/lib/directions";
 import { tradeLabel } from "@/lib/demos/copy";
 import { telHref, whatsAppHref } from "@/lib/demos/phone";
 import type { Demo, DemoService } from "@/lib/demos/schema";
@@ -60,11 +61,10 @@ export function toChrome(demo: Demo): ChromeSite {
     callHref: call ?? `${contact}?intent=call`,
     whatsappHref: whatsapp ?? `${contact}?intent=whatsapp`,
     quoteHref: `${contact}?intent=quote#quote`,
-    banner: live
-      ? "Website by Josh Tracy"
-      : `Demonstration. Not affiliated with or endorsed by ${demo.businessName}.`,
-    bannerLink: "Josh Tracy",
+    banner: live ? "" : `Demonstration. Not affiliated with or endorsed by ${demo.businessName}.`,
+    bannerLink: live ? "" : "Josh Tracy",
     bannerHref: "/",
+    direction: resolveDirection(demo),
     fullName: demo.businessName,
     footerNote: live
       ? `${place}. ${demo.businessName}.`

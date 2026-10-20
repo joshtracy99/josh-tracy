@@ -3,6 +3,8 @@ const nextConfig = {
   async headers() {
     const noindex = [{ key: "X-Robots-Tag", value: "noindex, nofollow" }];
     return [
+      { source: "/example/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },
+      { source: "/direction/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },
       { source: "/d/:path*", headers: noindex },
       { source: "/studio", headers: noindex },
       { source: "/studio/:path*", headers: noindex },

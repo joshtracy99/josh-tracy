@@ -3,7 +3,7 @@ export const trades = [
     id: "plumber",
     label: "Plumber",
     lead: "Plumbing and heating,",
-    pitch: "Leaks seen the same day when we can. Boilers and bathrooms booked in. The full site is the one you can open.",
+    pitch: "Leaks, boilers and bathrooms. The full site is the one you can open.",
     services: [
       { index: "01", title: "Leaks and call-outs", body: "A burst pipe, a tap that won’t stop, no heating on a cold morning." },
       { index: "02", title: "Boilers", body: "A new combi, a repair, or a service before winter." },

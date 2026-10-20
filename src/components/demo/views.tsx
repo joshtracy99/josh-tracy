@@ -3,169 +3,240 @@ import Link from "next/link";
 import { Photo } from "@/components/example/Photo";
 import { QuoteForm } from "@/components/example/QuoteForm";
 import type { ChromeSite } from "@/lib/chrome";
+import { resolveDirection } from "@/lib/directions";
 import { telHref, whatsAppHref } from "@/lib/demos/phone";
 import { askHref } from "@/lib/demos/present";
 import type { Demo, DemoService } from "@/lib/demos/schema";
 
-function Headline({ demo }: { demo: Demo }) {
+function Registration({ demo }: { demo: Demo }) {
+  if (!demo.registrationLabel || !demo.registrationNumber) return null;
   return (
-    <h1 className="font-example-serif text-[clamp(2.75rem,4.2vw,4.75rem)] font-medium leading-[1.08] tracking-[-0.03em]">
-      {demo.headlineLead}
-      <br />
-      {demo.headlineEmphasis ? <em className="italic">{demo.headlineEmphasis}</em> : null}{" "}
-      {demo.headlineTail}
-    </h1>
+    <p className="mt-4 text-sm text-ex-ink">
+      {demo.registrationLabel} {demo.registrationNumber}
+    </p>
+  );
+}
+
+function Towns({ demo }: { demo: Demo }) {
+  const others = demo.areas.filter((area) => area.toLowerCase() !== demo.town.toLowerCase());
+  return (
+    <section className="border-t border-ex-line px-5 py-12 md:px-8 md:py-16">
+      <h2 className="text-sm text-ex-mute">Where</h2>
+      <p className="mt-4 max-w-[12ch] font-example-serif text-[clamp(3.25rem,10vw,6.5rem)] font-medium leading-[0.88] tracking-[-0.035em]">
+        {demo.town}
+      </p>
+      {others.length > 0 ? (
+        <div className="mt-8 border-t border-ex-line pt-5">
+          <Link href={`/d/${demo.slug}/areas`} className="text-sm underline underline-offset-4">
+            The towns
+          </Link>
+          <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3 md:gap-y-5">
+            {others.map((area) => (
+              <li
+                key={area}
+                className="font-example-serif text-[clamp(1.15rem,2.4vw,2.4rem)] font-medium leading-none tracking-[-0.03em]"
+              >
+                {area}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
+function Band({ src, alt, town }: { src: string; alt: string; town: string }) {
+  return (
+    <figure className="border-t border-ex-line">
+      <div className="relative aspect-[16/9] overflow-hidden bg-ex-line md:aspect-[2/1]">
+        <Image src={src} alt={alt} fill sizes="100vw" className="object-cover object-center" />
+      </div>
+      <figcaption className="flex flex-col gap-1 px-5 py-3 text-sm sm:flex-row sm:items-baseline sm:justify-between md:px-8">
+        <span>{alt}</span>
+        <span className="text-ex-mute">{town}</span>
+      </figcaption>
+    </figure>
   );
 }
 
 export function DemoHome({ demo, site }: { demo: Demo; site: ChromeSite }) {
+  const direction = resolveDirection(demo);
+  if (direction === "heritage") return <HeritageHome demo={demo} site={site} />;
+  if (direction === "industrial") return <IndustrialHome demo={demo} site={site} />;
+  return <ContemporaryHome demo={demo} site={site} />;
+}
+
+function HeritageHome({ demo, site }: { demo: Demo; site: ChromeSite }) {
   const primary = demo.services[0];
+  const band = demo.hero ?? demo.wide;
   return (
     <main>
-      <section className="px-5 pb-14 pt-5 md:flex md:min-h-[calc(100svh-14rem)] md:flex-col md:px-8 md:pb-3 md:pt-8 lg:min-h-[calc(100svh-7.5rem)] lg:pb-8 lg:pt-10">
-        <div
-          className={`grid flex-1 items-start gap-6 md:items-stretch md:gap-8 lg:gap-x-14 ${
-            demo.hero ? "md:grid-cols-2 lg:grid-cols-12" : ""
-          }`}
-        >
-          <div
-            className={`md:flex md:h-full md:flex-col md:justify-end lg:justify-between ${
-              demo.hero ? "lg:col-span-7" : "max-w-3xl"
-            }`}
-          >
-            <Headline demo={demo} />
-            <div className="mt-5 max-w-sm md:mt-8 lg:mt-12">
-              <p className="text-lg leading-relaxed">{demo.pitch}</p>
-              {demo.registrationLabel && demo.registrationNumber ? (
-                <p className="mt-4 text-sm text-ex-ink">
-                  {demo.registrationLabel} {demo.registrationNumber}
-                </p>
-              ) : null}
-              <div className="mt-8 flex flex-col items-start gap-4">
-                <Link
-                  href={askHref(primary.askLabel, site)}
-                  className="inline-flex min-h-12 items-center bg-ex-ink px-5 text-sm text-ex-paper"
-                >
-                  {primary.askLabel}
-                </Link>
-                <Link href={site.quoteHref} className="text-sm underline underline-offset-4">
-                  Ask for a price
-                </Link>
-              </div>
+      <section className="px-5 pb-12 pt-10 md:px-10 md:pb-16 md:pt-16 lg:px-14 lg:pt-20">
+        <p className="text-sm text-ex-mute">{demo.town}</p>
+        <div className="mt-8 grid items-end gap-8 lg:grid-cols-12 lg:gap-12">
+          <h1 className="font-example-serif text-[clamp(2.8rem,5.2vw,5.25rem)] font-medium leading-[0.94] tracking-[-0.03em] lg:col-span-8">
+            {demo.headlineLead}{" "}
+            {demo.headlineEmphasis ? <em className="italic">{demo.headlineEmphasis}</em> : null} {demo.headlineTail}
+          </h1>
+          <div className="max-w-sm lg:col-span-4">
+            <p className="text-lg leading-relaxed">{demo.pitch}</p>
+            <Registration demo={demo} />
+            <div className="mt-6 flex flex-col items-start gap-3">
+              <Link
+                href={askHref(primary.askLabel, site)}
+                className="inline-flex min-h-12 items-center border border-current px-5 text-sm"
+              >
+                {primary.askLabel}
+              </Link>
+              <Link href={site.quoteHref} className="inline-flex min-h-11 items-center text-sm underline underline-offset-4">
+                Ask for a price
+              </Link>
             </div>
           </div>
-          {demo.hero ? (
-            <figure className="md:flex md:h-full md:min-h-0 md:flex-col md:justify-end lg:col-span-5 lg:justify-start">
-              <div className="relative aspect-[2/1] overflow-hidden bg-ex-line md:aspect-[3/4] md:w-full md:flex-none lg:aspect-auto lg:min-h-0 lg:flex-1">
-                <Image
-                  src={demo.hero.src}
-                  alt={demo.hero.alt}
-                  fill
-                  priority
-                  sizes="(min-width: 1024px) 40vw, (min-width: 768px) 50vw, 100vw"
-                  className="object-cover object-center"
-                />
-              </div>
-              <figcaption className="mt-2 flex justify-between gap-4 border-t border-ex-line pt-2 text-sm text-ex-mute md:mt-3 md:pt-3">
-                <span>{demo.hero.alt}</span>
-                <span className="shrink-0">{demo.town}</span>
-              </figcaption>
-            </figure>
-          ) : null}
         </div>
       </section>
-
-      <section className="border-t border-ex-line">
-        <h2 className="px-5 py-6 text-sm text-ex-mute md:px-8">The work</h2>
-        <ServiceGrid demo={demo} />
-      </section>
-
-      {demo.wide ? (
-        <figure className="border-t border-ex-line">
-          <div className="relative aspect-[16/10] md:aspect-[2/1]">
-            <Image
-              src={demo.wide.src}
-              alt={demo.wide.alt}
-              fill
-              sizes="100vw"
-              className="object-cover object-center"
-            />
-          </div>
-          <figcaption className="flex flex-col gap-1 px-5 py-4 text-sm sm:flex-row sm:items-baseline sm:justify-between md:px-8">
-            <span>{demo.wide.alt}</span>
-            <span className="text-ex-mute">{demo.town}</span>
-          </figcaption>
-        </figure>
-      ) : null}
-
-      <section className="border-t border-ex-line px-5 py-12 md:px-8 md:py-16">
-        <h2 className="text-sm text-ex-mute">Where</h2>
-        <p className="mt-4 font-example-serif text-[clamp(3.5rem,12vw,7rem)] font-medium leading-[0.88] tracking-[-0.035em]">
-          {demo.town}
-        </p>
-        {demo.areas.length > 1 ? (
-          <div className="mt-8 border-t border-ex-line pt-5">
-            <Link href={`/d/${demo.slug}/areas`} className="text-sm underline underline-offset-4">
-              The towns
+      {band ? <Band src={band.src} alt={band.alt} town={demo.town} /> : null}
+      <ul className="grid border-t border-ex-line md:grid-cols-3">
+        {demo.services.map((service, index) => (
+          <li key={service.slug} className="border-b border-ex-line md:border-b-0 md:border-r md:last:border-r-0">
+            <Link href={`/d/${demo.slug}/${service.slug}`} className="flex h-full flex-col">
+              {service.image ? (
+                <div className="relative aspect-[3/2] overflow-hidden bg-ex-line">
+                  <Image
+                    src={service.image.src}
+                    alt={service.image.alt}
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover object-center"
+                  />
+                </div>
+              ) : null}
+              <span className="flex flex-1 flex-col px-5 py-6 md:px-8 md:py-8">
+                <span className="text-sm text-ex-copper">{String(index + 1).padStart(2, "0")}</span>
+                <span className="mt-3 font-example-serif text-[1.7rem] font-medium leading-tight tracking-[-0.03em]">
+                  {service.title}
+                </span>
+                <span className="mt-2 text-sm leading-relaxed text-ex-mute">{service.summary}</span>
+              </span>
             </Link>
-            <ul className="mt-5 grid grid-cols-3 gap-x-4 gap-y-4 sm:gap-x-8 md:gap-y-5">
-              {demo.areas
-                .filter((area) => area.toLowerCase() !== demo.town.toLowerCase())
-                .map((area) => (
-                  <li
-                    key={area}
-                    className="font-example-serif text-[clamp(1.15rem,2.4vw,2.7rem)] font-medium leading-none tracking-[-0.03em]"
-                  >
-                    {area}
-                  </li>
-                ))}
-            </ul>
-          </div>
-        ) : null}
-      </section>
+          </li>
+        ))}
+      </ul>
+      <Towns demo={demo} />
     </main>
   );
 }
 
-function ServiceGrid({ demo }: { demo: Demo }) {
-  const triple = demo.services.length === 3;
+function ContemporaryHome({ demo, site }: { demo: Demo; site: ChromeSite }) {
+  const primary = demo.services[0];
   return (
-    <ul className={`grid border-t border-ex-line ${demo.services.length > 1 ? "sm:grid-cols-2" : ""} ${triple ? "lg:grid-cols-3" : ""}`}>
-      {demo.services.map((service, index) => (
-        <li
-          key={service.slug}
-          className={`border-b border-ex-line sm:border-r sm:last:border-r-0 ${
-            triple ? "sm:last:col-span-2 lg:border-b-0 lg:last:col-span-1" : "lg:border-b-0"
-          }`}
-        >
-          <Link href={`/d/${demo.slug}/${service.slug}`} className="flex h-full flex-col">
-            {service.image ? (
-              <div className="relative aspect-[4/3] overflow-hidden bg-ex-line">
-                <Image
-                  src={service.image.src}
-                  alt={service.image.alt}
-                  fill
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  className="object-cover object-center"
-                />
-              </div>
-            ) : null}
-            <span className="flex flex-1 flex-col px-5 py-5 md:px-6">
-              <span className="text-sm text-ex-mute">{String(index + 1).padStart(2, "0")}</span>
-              <span className="mt-2 font-example-serif text-[1.65rem] font-medium leading-tight tracking-[-0.03em] md:text-[1.85rem]">
-                {service.title}
-              </span>
-              <span className="mt-2 text-ex-mute">{service.summary}</span>
-            </span>
+    <main>
+      <section className="lg:grid lg:grid-cols-12">
+        <div className="px-5 py-10 md:px-8 md:py-14 lg:col-span-7 lg:py-16">
+          <p className="text-sm text-ex-mute">{demo.town}</p>
+          <h1 className="mt-4 max-w-[16ch] font-sans text-[clamp(2.5rem,4.2vw,4.15rem)] font-medium leading-[0.98] tracking-[-0.045em]">
+            {demo.headlineLead} {demo.headlineEmphasis} {demo.headlineTail}
+          </h1>
+          <p className="mt-5 max-w-md text-lg leading-snug">{demo.pitch}</p>
+          <Registration demo={demo} />
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link
+              href={askHref(primary.askLabel, site)}
+              className="inline-flex min-h-12 items-center bg-ex-ink px-5 text-sm text-ex-paper"
+            >
+              {primary.askLabel}
+            </Link>
+            <Link
+              href={site.quoteHref}
+              className="inline-flex min-h-12 items-center border border-ex-ink px-5 text-sm"
+            >
+              Ask for a price
+            </Link>
+          </div>
+        </div>
+        <div className="border-t border-ex-line lg:col-span-5 lg:border-l lg:border-t-0">
+          {demo.hero ? (
+            <div className="relative aspect-[4/3] overflow-hidden bg-ex-line">
+              <Image
+                src={demo.hero.src}
+                alt={demo.hero.alt}
+                fill
+                priority
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="object-cover object-center"
+              />
+            </div>
+          ) : null}
+          <ul className="border-t border-ex-line">
+            {demo.services.map((service, index) => (
+              <li key={service.slug} className="border-b border-ex-line last:border-b-0">
+                <Link href={`/d/${demo.slug}/${service.slug}`} className="flex items-baseline justify-between gap-4 px-5 py-4 md:px-8">
+                  <span>
+                    <span className="mr-3 text-sm text-ex-mute">{String(index + 1).padStart(2, "0")}</span>
+                    <span className="text-xl font-medium tracking-[-0.03em]">{service.title}</span>
+                  </span>
+                  <span className="text-sm text-ex-mute" aria-hidden="true">
+                    →
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+      {demo.wide ? <Band src={demo.wide.src} alt={demo.wide.alt} town={demo.town} /> : null}
+      <Towns demo={demo} />
+    </main>
+  );
+}
+
+function IndustrialHome({ demo, site }: { demo: Demo; site: ChromeSite }) {
+  const primary = demo.services[0];
+  const band = demo.hero ?? demo.wide;
+  return (
+    <main>
+      <section className="px-5 pb-8 pt-8 md:px-8 md:pb-12 md:pt-12">
+        <p className="text-sm text-[#f0b59a]">{demo.town}</p>
+        <h1 className="mt-4 max-w-[11ch] font-sans text-[clamp(2.85rem,7vw,6rem)] font-medium leading-[0.88] tracking-[-0.05em]">
+          {demo.headlineLead}
+          <br />
+          {demo.headlineEmphasis} {demo.headlineTail}
+        </h1>
+        <p className="mt-6 max-w-md text-lg leading-snug text-ex-mute">{demo.pitch}</p>
+        <Registration demo={demo} />
+        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <Link
+            href={askHref(primary.askLabel, site)}
+            className="inline-flex min-h-12 items-center bg-ex-ink px-5 text-sm text-ex-paper"
+          >
+            {primary.askLabel}
           </Link>
-        </li>
-      ))}
-    </ul>
+          <Link href={site.quoteHref} className="inline-flex min-h-12 items-center text-sm underline underline-offset-4">
+            Ask for a price
+          </Link>
+        </div>
+      </section>
+      {band ? <Band src={band.src} alt={band.alt} town={demo.town} /> : null}
+      <ul className="grid border-t border-ex-line md:grid-cols-3">
+        {demo.services.map((service, index) => (
+          <li key={service.slug} className="border-b border-ex-line md:border-b-0 md:border-r md:last:border-r-0">
+            <Link href={`/d/${demo.slug}/${service.slug}`} className="block px-5 py-8 md:px-8 md:py-10">
+              <span className="font-sans text-5xl font-medium leading-none tracking-[-0.04em] text-[#f0b59a]">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="mt-4 block text-2xl font-medium leading-tight tracking-[-0.03em]">{service.title}</span>
+              <span className="mt-2 block text-sm leading-relaxed text-ex-mute">{service.summary}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <Towns demo={demo} />
+    </main>
   );
 }
 
 export function DemoService({
-  demo,
   service,
   site,
 }: {

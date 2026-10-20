@@ -4,7 +4,7 @@ export const practice = {
   year: "£348",
   handover: "£99",
   description:
-    "No setup fee. No expensive web designer. Nothing technical to learn. I build the website, host it, and look after it, so you can stay on the tools.",
+    "Built, hosted and looked after for £29 a month. Nothing to pay until you’ve seen a homepage.",
 } as const;
 
 export const included = [

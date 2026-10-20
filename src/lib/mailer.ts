@@ -15,7 +15,10 @@ function escapeHtml(value: string) {
     .replace(/"/g, "&quot;");
 }
 
-export async function sendEnquiryEmail(fields: Record<string, string>) {
+export async function sendEnquiryEmail(
+  fields: Record<string, string>,
+  options?: { idempotencyKey?: string },
+) {
   if (!process.env.RESEND_API_KEY || !CONTACT_EMAIL) {
     throw new Error("Email is not configured");
   }
@@ -28,14 +31,17 @@ export async function sendEnquiryEmail(fields: Record<string, string>) {
     .join("");
 
   const resend = new Resend(process.env.RESEND_API_KEY);
-  const { error } = await resend.emails.send({
+  const { data, error } = await resend.emails.send({
     from: EMAIL_FROM,
     to: CONTACT_EMAIL,
     subject: `Website enquiry — ${fields.Name ?? "New"}`,
     html: `<table style="font-family:system-ui,sans-serif;font-size:15px;color:#1c1b19;">${rows}</table>`,
-  });
+  }, options?.idempotencyKey ? { idempotencyKey: options.idempotencyKey } : undefined);
 
   if (error) {
     throw new Error(error.message);
+  }
+  if (!data?.id) {
+    throw new Error("Email provider did not confirm acceptance.");
   }
 }

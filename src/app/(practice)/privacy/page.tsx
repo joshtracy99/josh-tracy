@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
+import { studioPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = studioPageMetadata({
   title: "Privacy",
   description: "What happens to the details you send Josh Tracy.",
-};
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (
-    <main className="mx-auto max-w-2xl px-5 py-12 md:px-8 md:py-20">
-      <h1 className="font-example-serif text-5xl font-medium tracking-[-0.045em]">Privacy</h1>
-      <div className="mt-8 space-y-6 leading-relaxed text-ex-mute">
+    <main id="content" className="studio-legal-content">
+      <h1>Privacy</h1>
+      <div className="studio-legal-copy">
         <p>
           This page covers the enquiry form on this site. It is not the privacy notice for a
           tradesperson’s own website. Each live client site has its own, because the enquiries on

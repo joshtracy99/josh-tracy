@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function NewDemonstrationPage() {
   return (
-    <div className="grid gap-8">
+    <div className="mx-auto grid max-w-3xl gap-8">
       <div>
         <h1 className="text-4xl font-medium tracking-[-0.04em]">New demonstration</h1>
         <p className="mt-4 max-w-xl text-sm leading-relaxed text-mute">

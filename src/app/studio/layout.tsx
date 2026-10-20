@@ -33,7 +33,7 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
           </nav>
         </div>
       </header>
-      <main id="content" className="mx-auto max-w-3xl px-5 py-10 md:px-8 md:py-14">
+      <main id="content" className="px-5 py-10 md:px-8 md:py-14">
         {children}
       </main>
     </div>

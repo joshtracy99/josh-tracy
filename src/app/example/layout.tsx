@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   },
   description:
     "An example website for a Godalming plumber. Alderton Plumbing & Heating is not a real business.",
-  robots: { index: true, follow: true },
+  robots: { index: false, follow: true },
 };
 
 export default function ExampleLayout({ children }: { children: React.ReactNode }) {

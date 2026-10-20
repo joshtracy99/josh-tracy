@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Bodoni_Moda, Schibsted_Grotesk } from "next/font/google";
 import "./globals.css";
+import { HOME_DESCRIPTION, HOME_TITLE, SITE_URL } from "@/lib/seo";
 
 const grotesk = Schibsted_Grotesk({
   subsets: ["latin"],
   variable: "--font-grotesk",
   display: "swap",
+  preload: false,
 });
 
 const bodoni = Bodoni_Moda({
@@ -13,16 +15,16 @@ const bodoni = Bodoni_Moda({
   style: ["normal", "italic"],
   variable: "--font-bodoni",
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "Josh Tracy — Websites for tradespeople",
-    template: "%s — Josh Tracy",
+    default: HOME_TITLE,
+    template: "%s — The Trade Workshop",
   },
-  description:
-    "A professional website for plumbers, electricians, builders, roofers, landscapers and other trades. £29 a month, and nothing to pay until you’ve seen a homepage. Josh Tracy builds it, hosts it, and looks after it.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  description: HOME_DESCRIPTION,
+  metadataBase: new URL(SITE_URL),
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
