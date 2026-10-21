@@ -180,7 +180,6 @@ export default function HomePage() {
                 {notIncluded.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
-                <li>The handover of the files, if you want them, is {practice.handover}.</li>
                 <li>
                   {practice.price} × 12 = {practice.year} a year. That is the cost of the service, not a
                   forecast of jobs.
