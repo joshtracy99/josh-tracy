@@ -3,9 +3,12 @@ import { HeroPortfolio } from "@/components/home/HeroPortfolio";
 import { EnquiryPhone } from "@/components/home/EnquiryPhone";
 import { StudioFooter, StudioHeader } from "@/components/studio/StudioChrome";
 import { PreviewForm } from "@/components/home/PreviewForm";
-import { figures, notIncluded, practice } from "@/lib/practice";
+import { notIncluded, practice } from "@/lib/practice";
+import { BehaviourStatistic } from "@/components/home/BehaviourStatistic";
+import { ResearchDecisions } from "@/components/home/ResearchDecisions";
 import { HOME_DESCRIPTION, HOME_TITLE, studioPageMetadata, studioStructuredData } from "@/lib/seo";
 import "./hero.css";
+import "./story.css";
 
 export const metadata = studioPageMetadata({ title: HOME_TITLE, description: HOME_DESCRIPTION, path: "/" });
 
@@ -86,70 +89,36 @@ export default function HomePage() {
                 <span>on the phone.</span>
               </h2>
               <p>
-                A customer sends a quote from the website. It arrives as an email. A call and a
-                WhatsApp go straight through. Recommendations, Facebook and listings can point people to
-                one place that’s yours: your services, towns, work and direct enquiries, under your own domain.
+                A customer requests a quote from the website. It arrives as an email.
+                Calls and WhatsApp messages go straight to your phone.
               </p>
             </div>
             <EnquiryPhone />
           </div>
         </section>
 
-        <section className="home-research" id="research" aria-labelledby="research-title">
+        <section className="story-why" id="why" aria-labelledby="why-title">
           <div className="home-wrap">
-            <div className="home-sheet">
-              <div className="home-research-head">
-                <h2 id="research-title">We do the homework before we design.</h2>
-              </div>
-              <div className="home-compare">
-                <article className="home-stat">
-                  <p className="home-stat-num">{figures[0].value}</p>
-                  <div className="home-stat-copy">
-                    <p className="home-stat-claim">{figures[0].claim}</p>
-                  </div>
-                </article>
-                <article className="home-stat">
-                  <p className="home-stat-num">{figures[1].value}</p>
-                  <div className="home-stat-copy">
-                    <p className="home-stat-claim">of all UK businesses said they have a website.</p>
-                  </div>
-                </article>
-                <p className="home-source">
-                  <a href={figures[0].href}>{figures[0].source}</a>
-                  <span>
-                    October 2025–January 2026 · 4,450 UK businesses. Construction was among the least likely
-                    sectors to report a website. Reported ownership across business sizes, not a sole-trader
-                    count or evidence of work won.
-                  </span>
-                </p>
-              </div>
-              <ol className="home-path">
-                <li>
-                  <span>01</span>
-                  <div>
-                    <h3>Research</h3>
-                    <p>The trade, the towns and the job.</p>
-                  </div>
-                </li>
-                <li>
-                  <span>02</span>
-                  <div>
-                    <h3>Decisions</h3>
-                    <p>
-                      <a href="/direction/alderton/emergency">A leak is a call</a>.{" "}
-                      <a href="/direction/alderton/contact?intent=quote#quote">Planned work is a quote</a>.
-                    </p>
-                  </div>
-                </li>
-                <li>
-                  <span>03</span>
-                  <div>
-                    <h3>The website</h3>
-                    <p>Designed from those decisions, not from a template.</p>
-                    <a href="#work">See Alderton <span aria-hidden="true">↗</span></a>
-                  </div>
-                </li>
-              </ol>
+            <div className="story-inner">
+              <h2 id="why-title">They’ve heard your name. <span>Now they look you up.</span></h2>
+              <p className="story-intro">A recommendation, Facebook page or review might introduce you. Your own website gives someone a place to check your work, services, areas covered and contact details.</p>
+              <figure className="story-evidence">
+                <p className="story-stat-number"><BehaviourStatistic value={54} /></p>
+                <figcaption>
+                  <p className="story-stat-claim">of surveyed US adults said they were likely to visit a business’s website after reading positive reviews.</p>
+                  <p className="story-source"><a href="https://www.brightlocal.com/research/local-consumer-review-survey/">BrightLocal · Local Consumer Review Survey 2026 <span aria-hidden="true">↗</span></a></p>
+                  <p className="story-caveat">1,002 US adults. Multiple answers allowed. Stated likelihood, not tracked visits or a measure of UK customers.</p>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section className="home-research story-research" id="research" aria-labelledby="research-title">
+          <div className="home-wrap">
+            <div className="story-inner">
+              <h2 id="research-title">We do the homework before we design.</h2>
+              <ResearchDecisions />
             </div>
           </div>
         </section>
