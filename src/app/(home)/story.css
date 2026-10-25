@@ -91,32 +91,6 @@
   margin: 0;
 }
 
-.research-decisions {
-  min-width: 0;
-  margin: 1.5rem 0 0;
-  padding: 0;
-  border: 0;
-}
-
-.research-decisions legend {
-  padding: 0;
-  color: var(--mute);
-  font-size: 1rem;
-}
-
-.research-invite {
-  margin: 0.35rem 0 1rem;
-  font-size: 1.125rem;
-  font-weight: 600;
-}
-
-.research-routes {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
-  gap: 0.5rem;
-}
-
 .research-choice input {
   position: absolute;
   width: 1px;
@@ -146,72 +120,6 @@
 .research-choice input:focus-visible + label {
   outline: 2px solid var(--signal-ink);
   outline-offset: 3px;
-}
-
-.decision-flow {
-  grid-column: 1 / -1;
-  grid-row: 2;
-  list-style: none;
-  display: grid;
-  align-content: start;
-  margin: 1rem 0 0;
-  padding: 0;
-}
-
-.decision-planned {
-  visibility: hidden;
-}
-
-.research-routes:has(#research-planned:checked) .decision-urgent {
-  visibility: hidden;
-}
-
-.research-routes:has(#research-planned:checked) .decision-planned {
-  visibility: visible;
-}
-
-.decision-flow li {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1.5rem minmax(0, 1fr);
-  gap: 0.75rem;
-  padding: 0 0 1.25rem;
-}
-
-.decision-flow li:last-child {
-  padding-bottom: 0;
-}
-
-.decision-flow li:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  top: 1.6rem;
-  bottom: 0.2rem;
-  left: 0.55rem;
-  width: 1px;
-  background: var(--line);
-  transform-origin: top;
-}
-
-.decision-number {
-  padding-top: 0.3rem;
-  color: var(--signal-ink);
-  font: 0.75rem / 1.2 var(--font-plex-mono), monospace;
-}
-
-.decision-flow h3 {
-  margin: 0 0 0.35rem;
-  font-size: 1.125rem;
-  line-height: 1.3;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-.decision-flow p {
-  margin: 0;
-  font-size: 1.0625rem;
-  line-height: 1.45;
-  max-width: 41ch;
 }
 
 .decision-element {
@@ -266,90 +174,32 @@
   text-underline-offset: 0.2em;
 }
 
-.research-conclusion {
-  max-width: 60ch;
-  margin: 1.5rem 0 0;
-  padding-top: 1rem;
-  border-top: 1px solid var(--line);
-  color: var(--mute);
-  font-size: 1.0625rem;
-  line-height: 1.45;
-}
 
+/* The two situations are part of the reading order, not a worksheet. */
+.research-decisions { min-width: 0; margin-top: 1.5rem; }
+.research-intro { max-width: 51ch; margin: 0; font-size: 1.125rem; line-height: 1.45; }
+.research-examples { display: grid; gap: 1.5rem; margin-top: 1.5rem; }
+.research-example { min-width: 0; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+.research-situation h3 { margin: 0 0 .6rem; font-size: 1rem; color: var(--mute); font-weight: 400; }
+.decision-need { max-width: 22ch; margin: 0; font: 600 clamp(1.6rem, 3vw, 2rem)/1.15 var(--font-syne), sans-serif; letter-spacing: -.04em; }
+.research-example .decision-element { max-width: none; margin-top: 1rem; }
+.research-disclosure { margin: 1rem 0 0; color: var(--mute); font-size: .875rem; }
+.clarity-disclosure-panel { margin-top: 1.5rem; border-block: 1px solid var(--line); }
+.clarity-disclosure-panel > summary { display: flex; justify-content: space-between; align-items: center; gap: 1rem; min-height: 3rem; padding: .65rem 0; cursor: pointer; list-style: none; font-size: 1rem; }
+.clarity-disclosure-panel > summary::-webkit-details-marker { display: none; }
+.clarity-disclosure-panel > summary::after { content: '+'; flex: none; font-size: 1.5rem; line-height: 1; }
+.clarity-disclosure-panel[open] > summary::after { content: '−'; }
+.clarity-disclosure-panel > summary:hover { color: var(--signal-ink); }
+.clarity-disclosure-panel .clarity-comparison { margin: 1rem 0 1.5rem; }
 @media (min-width: 760px) {
-  .story-inner {
-    padding-inline: clamp(1.25rem, 2.5vw, 2.25rem);
-  }
-
-  .story-why {
-    padding-top: 2.5rem;
-  }
-
-  .story-evidence {
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    align-items: center;
-    column-gap: 2rem;
-    margin-top: 2.5rem;
-  }
-
-  .story-stat-number {
-    font-size: clamp(8rem, 16vw, 13.5rem);
-  }
-
-  .story-stat-claim {
-    font-size: 1.25rem;
-  }
-
-  .research-routes {
-    grid-template-columns: repeat(2, minmax(0, 13rem)) 1fr;
-  }
-
-}
-
-@media (min-width: 1024px) {
-  .decision-flow {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 2rem;
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--line);
-  }
-
-  .decision-flow li {
-    grid-template-columns: 1fr;
-    align-content: start;
-    gap: 0.75rem;
-    padding: 0;
-  }
-
-  .decision-flow li:not(:last-child)::after {
-    content: "→";
-    top: -0.1rem;
-    right: 0;
-    bottom: auto;
-    left: auto;
-    width: auto;
-    background: none;
-    color: var(--signal-ink);
-    font-size: 1.25rem;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  /* Choice causes a finite, small progression from need to decision to result. */
-  .research-routes:has(#research-urgent:checked) .decision-urgent li > div,
-  .research-routes:has(#research-planned:checked) .decision-planned li > div {
-    animation-name: decision-arrive;
-    animation-duration: 350ms;
-    animation-timing-function: ease-out;
-    animation-fill-mode: both;
-  }
-
-  .decision-flow li:nth-child(2) > div { animation-delay: 100ms; }
-  .decision-flow li:nth-child(3) > div { animation-delay: 200ms; }
-
-  @keyframes decision-arrive {
-    from { opacity: 0.7; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  .story-inner { padding-inline: clamp(1.25rem, 2.5vw, 2.25rem); }
+  .story-why { padding-top: 2.5rem; }
+  .story-evidence { grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); align-items: center; column-gap: 2rem; margin-top: 2.5rem; }
+  .story-stat-number { font-size: clamp(8rem,16vw,13.5rem); }
+  .story-stat-claim { font-size: 1.25rem; }
+  .research-examples { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 2.5rem; }
+  .research-example { display: grid; grid-template-rows: auto 1fr; }
+  .research-situation { min-height: 7.25rem; }
+  .research-example .decision-element { align-content: start; }
+  .decision-element a { margin-top: auto; }
 }
