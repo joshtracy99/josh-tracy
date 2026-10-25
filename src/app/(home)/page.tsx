@@ -6,9 +6,11 @@ import { PreviewForm } from "@/components/home/PreviewForm";
 import { notIncluded, practice } from "@/lib/practice";
 import { BehaviourStatistic } from "@/components/home/BehaviourStatistic";
 import { ResearchDecisions } from "@/components/home/ResearchDecisions";
+import { WhyComparison } from "@/components/home/WhyComparison";
 import { HOME_DESCRIPTION, HOME_TITLE, studioPageMetadata, studioStructuredData } from "@/lib/seo";
 import "./hero.css";
 import "./story.css";
+import "./motion.css";
 
 export const metadata = studioPageMetadata({ title: HOME_TITLE, description: HOME_DESCRIPTION, path: "/" });
 
@@ -101,7 +103,8 @@ export default function HomePage() {
           <div className="home-wrap">
             <div className="story-inner">
               <h2 id="why-title">They’ve heard your name. <span>Now they look you up.</span></h2>
-              <p className="story-intro">A recommendation, Facebook page or review might introduce you. Your own website gives someone a place to check your work, services, areas covered and contact details.</p>
+              <p className="story-intro">A recommendation, Facebook page or review introduces you. Your website helps someone check you out.</p>
+              <WhyComparison />
               <figure className="story-evidence">
                 <p className="story-stat-number"><BehaviourStatistic value={54} /></p>
                 <figcaption>
