@@ -9,9 +9,8 @@
 .portfolio-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .25rem .75rem; padding: .5rem .15rem 0; }
 .portfolio-tools button { min-height: 44px; padding: .5rem .8rem; background: transparent; border: 1px solid transparent; border-radius: 2rem; color: var(--ink); font: inherit; font-size: .875rem; cursor: pointer; }
 .portfolio-formats { display: flex; gap: .2rem; }
-.portfolio-formats button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.portfolio-formats button[aria-pressed="true"] { background: #12141a0a; border-color: var(--line); color: var(--ink); }
 .portfolio-tools button:disabled { color: var(--mute); cursor: default; }
-.portfolio-note { flex-basis: 100%; font-size: .75rem; color: var(--mute); padding: .15rem .65rem .25rem; }
 .motion-portfolio { background: #d9d6cd; container-type: inline-size; }
 .motion-portfolio.is-mobile-view .hero-preview-document { inset: 0 auto 0 50%; width: 31.98%; transform: translateX(-50%); box-shadow: 0 0 0 5px #171b1b, 0 10px 30px #12141a24; }
 .journey-scene { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3cqw; padding: 6cqw; color: #171b1b; background: #eeede6; }
@@ -67,29 +66,10 @@
 .clarity-takeaway { margin: 1rem 0 0; font-size: 1.125rem; line-height: 1.4; max-width: 47ch; }
 .clarity-disclosure { margin: .7rem 0 0; font-size: .875rem; line-height: 1.5; color: var(--mute); }
 .clarity-disclosure a { color: var(--ink); text-decoration: underline; text-underline-offset: .2em; white-space: nowrap; }
-.story-evidence { padding-top: 2rem; border-top: 1px solid var(--line); }
-.decision-flow h3 { color: var(--mute); font-size: .875rem; font-weight: 400; }
-.decision-flow .decision-need { font: 600 clamp(1.6rem, 3vw, 2rem)/1.15 var(--font-syne), sans-serif; letter-spacing: -.04em; max-width: 20ch; }
-.decision-element { margin-top: .75rem; }
-.decision-trace { display: block; width: 7rem; height: 1.5rem; margin-top: .75rem; color: var(--signal-ink); }
-.decision-fields { display: grid; gap: .6rem; }
-.decision-fields > span { display: flex; flex-wrap: wrap; gap: .25rem .75rem; justify-content: space-between; font-size: .8rem; color: #cbc8c1; border-bottom: 1px solid #ffffff40; padding-bottom: .4rem; }
-.decision-fields b { font-weight: 400; color: #f6f3eb; }
 @media (min-width: 1024px) {
   .clarity-comparison { max-width: 57rem; }
   .clarity-site { min-height: 23rem; }
   .clear-content { grid-template-columns: 1fr 1fr; gap: 2rem; }
-  .decision-flow { grid-template-columns: .9fr .85fr 1.25fr; }
-  .decision-flow li:not(:last-child)::after { content: none; }
-}
-@media (min-width: 1200px) {
-  .story-why .story-inner { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); column-gap: 3.5rem; }
-  .story-why h2, .story-why .story-intro { grid-column: 1 / -1; }
-  .story-why .clarity-comparison { grid-column: 1; }
-  .story-why .story-evidence { grid-column: 2; grid-template-columns: 1fr; align-content: center; gap: 1.25rem; padding-top: 0; border-top: 0; }
-  .story-why .story-stat-number { font-size: clamp(8rem, 13vw, 12rem); }
-  .story-why .story-stat-claim { font-size: 1.125rem; }
-  .story-why .clear-content strong { font-size: 2.5rem; }
 }
 @media (max-width: 1079px) { .portfolio-play { display: none; } }
 @media (max-width: 759px) {
@@ -105,20 +85,15 @@
   .clarity-site { min-height: 24rem; }
   .clarity-controls label { font-size: .9375rem; }
   .clarity-takeaway { font-size: 1rem; }
-  .decision-flow li { padding-bottom: 1rem; }
-  .decision-trace { display: none; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .home-btn, .portfolio-tools button, .research-choice label { transition: color var(--motion-fast), background-color var(--motion-fast), transform var(--motion-fast) var(--motion-ease); }
   .home-btn:hover { transform: translateY(-2px); }
   .home-btn:active, .portfolio-tools button:active { transform: translateY(1px); }
-  .home-panel h1 { animation: headline-compose var(--motion-enter) var(--motion-ease) both; }
   .journey-scene { animation: scene-compose var(--motion-enter) var(--motion-ease) both; }
   .clarity-comparison:has(#clarity-clear:checked) .clarity-clear .clarity-site,
   .clarity-comparison:has(#clarity-unclear:checked) .clarity-unclear .clarity-site { animation: scene-compose 440ms var(--motion-ease) both; }
-  .research-routes:has(#research-urgent:checked) .decision-urgent .decision-trace path,
-  .research-routes:has(#research-planned:checked) .decision-planned .decision-trace path { stroke-dasharray: 180; animation: decision-connect 520ms var(--motion-ease) both; }
-  @keyframes headline-compose { from { opacity: .85; transform: translateX(-6px); } to { opacity: 1; transform: translateX(0); } }
   @keyframes scene-compose { from { opacity: .6; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes decision-connect { from { stroke-dashoffset: 180; } to { stroke-dashoffset: 0; } }
 }
+
+.home .home-open .hero-caption > span { font-size: .8rem; letter-spacing: 0; }

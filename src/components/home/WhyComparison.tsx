@@ -3,6 +3,8 @@ import Image from "next/image";
 /** Native controls keep this comparison operable without client JavaScript. */
 export function WhyComparison() {
   return (
+    <details className="clarity-disclosure-panel">
+      <summary>See what a clear website changes</summary>
     <fieldset className="clarity-comparison">
       <legend>Make it easy to see what you do.</legend>
       <div className="clarity-controls">
@@ -28,5 +30,6 @@ export function WhyComparison() {
       </div>
       <p className="clarity-disclosure">Illustrative comparison · same fictional business. <a href="/direction/alderton">Explore Alderton <span aria-hidden="true">↗</span></a></p>
     </fieldset>
+    </details>
   );
 }

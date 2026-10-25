@@ -64,7 +64,7 @@ export default function HomePage() {
                 <span>websites.</span>
               </h1>
               <p className="home-line">
-                Designed for the trade. Nothing to pay until you’ve seen a homepage.
+                Websites for tradespeople. Built and looked after for you.
               </p>
             </div>
             <div className="home-panel-foot">
@@ -76,7 +76,7 @@ export default function HomePage() {
                 Get my free website preview
               </a>
               <p className="home-who">
-                I’m Josh Tracy. I build the site and look after it, and I reply by text.
+                I’m Josh Tracy. See your own homepage before paying. I’ll reply by text.
               </p>
             </div>
           </div>
@@ -103,8 +103,7 @@ export default function HomePage() {
           <div className="home-wrap">
             <div className="story-inner">
               <h2 id="why-title">They’ve heard your name. <span>Now they look you up.</span></h2>
-              <p className="story-intro">A recommendation, Facebook page or review introduces you. Your website helps someone check you out.</p>
-              <WhyComparison />
+              <p className="story-intro">A recommendation or Facebook page introduces you. Your website shows your work, services and how to get in touch.</p>
               <figure className="story-evidence">
                 <p className="story-stat-number"><BehaviourStatistic value={54} /></p>
                 <figcaption>
@@ -113,6 +112,7 @@ export default function HomePage() {
                   <p className="story-caveat">1,002 US adults. Multiple answers allowed. Stated likelihood, not tracked visits or a measure of UK customers.</p>
                 </figcaption>
               </figure>
+              <WhyComparison />
             </div>
           </div>
         </section>
@@ -120,7 +120,7 @@ export default function HomePage() {
         <section className="home-research story-research" id="research" aria-labelledby="research-title">
           <div className="home-wrap">
             <div className="story-inner">
-              <h2 id="research-title">We do the homework before we design.</h2>
+              <h2 id="research-title">Built around your trade.</h2>
               <ResearchDecisions />
             </div>
           </div>
@@ -142,9 +142,10 @@ export default function HomePage() {
                 Get my free website preview
               </a>
               <PriceGroup group={offer[2]} />
-              <p className="home-price-note">
-                Domain renewal after the first year is charged separately from the {practice.price}/month. If you cancel, hosting stops and your domain stays yours. Optional website-file handover: {practice.handover}.
-              </p>
+              <div className="home-price-note">
+                <p>{practice.price} × 12 = {practice.year} a year. That is the cost of the service, not a forecast of jobs.</p>
+                <p className="mt-3">Domain renewal after the first year is charged separately from the {practice.price}/month. If you cancel, hosting stops and your domain stays yours. Optional website-file handover: {practice.handover}.</p>
+              </div>
             </div>
             <details className="home-details">
               <summary>What isn’t included</summary>
@@ -152,10 +153,6 @@ export default function HomePage() {
                 {notIncluded.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
-                <li>
-                  {practice.price} × 12 = {practice.year} a year. That is the cost of the service, not a
-                  forecast of jobs.
-                </li>
               </ul>
               <p>
                 <Link href="/terms">The full terms</Link>

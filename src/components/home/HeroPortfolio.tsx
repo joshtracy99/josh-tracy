@@ -16,7 +16,7 @@ export function HeroPortfolio() {
   const [format, setFormat] = useState<"desktop" | "mobile">("desktop");
   const [step, setStep] = useState(-1);
   const [playing, setPlaying] = useState(false);
-  const started = useRef(false);
+  const [hasPlayed, setHasPlayed] = useState(false);
 
   useEffect(() => {
     const query = window.matchMedia("(min-width: 1080px)");
@@ -46,12 +46,6 @@ export function HeroPortfolio() {
   }, [format]);
 
   useEffect(() => {
-    if (ready && wide && allowed && visible && !started.current) {
-      started.current = true; setStep(0); setPlaying(true);
-    }
-  }, [ready, wide, allowed, visible]);
-
-  useEffect(() => {
     if (!allowed || !wide) { setPlaying(false); setStep(-1); }
   }, [allowed, wide]);
 
@@ -71,14 +65,14 @@ export function HeroPortfolio() {
   }, [step, format]);
 
   const chooseFormat = (value: "desktop" | "mobile") => {
-    started.current = true; setPlaying(false); setStep(-1); setFormat(value);
+    setPlaying(false); setStep(-1); setFormat(value);
   };
 
   return (
     <figure className="home-plate hero-portfolio" data-journey-step={step} data-playing={playing}>
       <div className="hero-browser">
         <div className="hero-browser-bar" aria-hidden="true"><svg viewBox="0 0 20 16" fill="none"><rect x="1" y="1" width="18" height="14" rx="2.5" stroke="currentColor" /><path d="M1 5h18" stroke="currentColor" /></svg><span>alderton.example</span><span className="hero-browser-line" /></div>
-        <div ref={viewport} className={`hero-preview motion-portfolio ${format === "mobile" ? "is-mobile-view" : ""}`} role="img" aria-label="Alderton Plumbing & Heating, fictional website. An illustrative journey from finding the business to viewing work and requesting a quote.">
+        <div ref={viewport} className={`hero-preview motion-portfolio ${format === "mobile" ? "is-mobile-view" : ""}`} role="img" aria-label="Alderton Plumbing & Heating, fictional website preview. Plumbing services and clear call and quote options for Godalming and nearby towns.">
           <div ref={(node) => { documentView.current = node; if (node) node.inert = true; }} className="hero-preview-document" aria-hidden="true">
             <iframe ref={frame} src="/direction/alderton" title="Alderton fictional website — visual portfolio preview" tabIndex={-1} scrolling="no" />
           </div>
@@ -89,11 +83,9 @@ export function HeroPortfolio() {
         <div className="portfolio-tools" data-ready={ready}>
           <div className="portfolio-formats" role="group" aria-label="Example website viewport"><button type="button" aria-pressed={format === "desktop"} onClick={() => chooseFormat("desktop")}>Desktop</button><button type="button" aria-pressed={format === "mobile"} onClick={() => chooseFormat("mobile")}>Mobile</button></div>
           <button className="portfolio-play" type="button" disabled={!ready || !allowed} onClick={() => {
-            started.current = true;
             if (playing) setPlaying(false);
-            else { setFormat("desktop"); setStep(0); setPlaying(true); }
-          }}>{playing ? "Pause journey" : "Replay journey"}<span aria-hidden="true"> {playing ? "Ⅱ" : "↻"}</span></button>
-          <span className="portfolio-note">An example customer journey</span>
+            else { setHasPlayed(true); setFormat("desktop"); setStep(0); setPlaying(true); }
+          }}>{playing ? "Pause journey" : hasPlayed ? "Replay journey" : "Watch the customer journey"}<span aria-hidden="true"> {playing ? "Ⅱ" : "↻"}</span></button>
         </div>
       </div>
       <figcaption className="home-caption hero-caption"><span>Alderton <span aria-hidden="true">·</span> fictional example</span><a href="/direction/alderton">Open the website<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 15 15 4M5 4h10v10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg></a></figcaption>
